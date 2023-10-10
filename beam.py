@@ -13,21 +13,19 @@ class Cities(IntEnum):
     GUERRERO_NEGRO = 7
 
 
-class State():
+class Graph():
     # instancia
     _instance = None
         
     # matriz de adyacencia
     _adjMatrix = []
+        
 
-    def __new__(cls):
-        # hacerlo un singleton 
+    def __new__(cls, nodes=0):
+        # hacerlo un singleton y crear la matriz de adyacencia
         if cls._instance is None:
-            cls._instance = super(State, cls).__new__(cls)
-            # crear matriz de adyacencia
-            cls._adjMatrix = [
-                [0] * len(Cities) for i in range(len(Cities))
-            ]
+            cls._instance = super(Graph, cls).__new__(cls)
+            cls._adjMatrix = [[0] * nodes for i in range(nodes)]
             
         return cls._instance
 
@@ -35,7 +33,6 @@ class State():
     def validEdge(cls,p1,p2):
         if p1 == p2:
             raise Exception("No se puede unir una ciudad con si misma")
-    
 
     @classmethod
     def setWeight(cls, p1, p2, weight):
@@ -53,7 +50,7 @@ class State():
 
 
 
-Mapa = State()\
+Mapa = Graph(len(Cities))\
     .setWeight(Cities.TIJUANA, Cities.TECATE, 52)\
     .setWeight(Cities.TIJUANA, Cities.ROSARITO, 20)\
     .setWeight(Cities.ROSARITO, Cities.ENSENADA, 85)\
