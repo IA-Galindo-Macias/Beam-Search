@@ -49,13 +49,22 @@ class Graph():
 
 
 def distance(cite_route:list)->int:
-    # distancia total de la ruta
-    
-    sum = 0
-    for i in range(len(cite_route) - 1):
-        sum += Graph.getWeight(cite_route[i], cite_route[i+1])
+    if len(route) == 0 or len(route) == 1:
+        return 0
+
+    sum = Graph.getWeight(route[0], route[1])
+    for i in range(1,len(route)-1):
+        sum += Graph.getWeight(route[i], route[i+1])
 
     return sum
+    
+    # # distancia total de la ruta
+    
+    # sum = 0
+    # for i in range(len(cite_route) - 1):
+    #     sum += Graph.getWeight(cite_route[i], cite_route[i+1])
+
+    # return sum
 
 
 def search_routes(rute) -> list:
@@ -81,56 +90,57 @@ def search_routes(rute) -> list:
     # ciudades mas cercanas por las que no se ha pasado
     return routes
 
+if __name__ == '__main__':
+    
+    # grafo
+    Graph(len(Cities))\
+        .setWeight(Cities.TIJUANA, Cities.TECATE, 52)\
+        .setWeight(Cities.TIJUANA, Cities.ROSARITO, 20)\
+        .setWeight(Cities.ROSARITO, Cities.ENSENADA, 85)\
+        .setWeight(Cities.TECATE, Cities.MEXICALI, 135)\
+        .setWeight(Cities.TECATE, Cities.ENSENADA, 100)\
+        .setWeight(Cities.MEXICALI, Cities.SAN_FELIPE, 197)\
+        .setWeight(Cities.ENSENADA, Cities.SAN_FELIPE, 246)\
+        .setWeight(Cities.ENSENADA, Cities.SAN_QUINTIN, 185)\
+        .setWeight(Cities.SAN_FELIPE, Cities.GUERRERO_NEGRO, 394)\
+        .setWeight(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
 
-# grafo
-Graph(len(Cities))\
-    .setWeight(Cities.TIJUANA, Cities.TECATE, 52)\
-    .setWeight(Cities.TIJUANA, Cities.ROSARITO, 20)\
-    .setWeight(Cities.ROSARITO, Cities.ENSENADA, 85)\
-    .setWeight(Cities.TECATE, Cities.MEXICALI, 135)\
-    .setWeight(Cities.TECATE, Cities.ENSENADA, 100)\
-    .setWeight(Cities.MEXICALI, Cities.SAN_FELIPE, 197)\
-    .setWeight(Cities.ENSENADA, Cities.SAN_FELIPE, 246)\
-    .setWeight(Cities.ENSENADA, Cities.SAN_QUINTIN, 185)\
-    .setWeight(Cities.SAN_FELIPE, Cities.GUERRERO_NEGRO, 394)\
-    .setWeight(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
+    # Ciudad
+    origin = Cities.TIJUANA
+    goal = Cities.GUERRERO_NEGRO
+    
+    # tamaño
+    beam = 3
 
-# Ciudad
-origin = Cities.TIJUANA
-goal = Cities.GUERRERO_NEGRO
+    # Rutas
+    routes = [
+        [origin],
+    ]
 
-# tamaño
-beam = 3
-
-# Rutas
-routes = [
-    [origin],
-]
-
-solution = []
-solution_not_found = True
+    solution = []
+    solution_not_found = True
 
 
-while(solution_not_found):
-    new_routes = []
-    print("")
-    for route in routes:
-        new_routes += search_routes(route)
+    while(solution_not_found):
+        new_routes = []
+        print("")
+        for route in routes:
+            new_routes += search_routes(route)
         
-    new_routes.sort(key=distance)
-    routes = new_routes[:3]
+        new_routes.sort(key=distance)
+        routes = new_routes[:3]
 
-    print("")
-    for route in routes:
-        print(route)
+        print("")
+        for route in routes:
+            print(route)
 
-    for route in routes:
-        if goal in route:       # solucion encontrada
-            solution_not_found = False
-            solution = route
+        for route in routes:
+            if goal in route:       # solucion encontrada
+                solution_not_found = False
+                solution = route
 
-    new_routes.clear()
+        new_routes.clear()
 
-print("\nSolucion encontrada: ")
-for e in route:
-    print(e)
+    print("\nSolucion encontrada: ")
+    for e in route:
+        print(e)
