@@ -1,5 +1,7 @@
 
 from dataclasses import dataclass
+from functools import reduce   
+import operator 
 
 from Utils import Cities
 from Utils import Graph
@@ -29,32 +31,29 @@ baja_california = Graph(len(Cities))\
     .add_edge(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
 
 
-origin = Cities.TIJUANA
-goal = Cities.GUERRERO_NEGRO
-beam = 3
-
-
-routes = [Route([origin], 0)]
-
-new_routes = []
-for route in routes:
-    new_routes += [
+def avalable_routes(route):
+    return [
         route.extend(city)
         for city in baja_california.get_vertices(route.last())
         if not city[1] in route.path
     ]
 
-routes = sorted(new_routes, key=lambda x: x.distance)[:beam]
+def valid_route(route):
+    pass
 
-if len(list(filter(lambda x: goal in x.path, routes))) > 0:
-    print("\nsolucion encontrada!\n")
+origin = Cities.TIJUANA
+goal = Cities.GUERRERO_NEGRO
+beam = 4
+routes = [Route([origin], 0)]
 
-new_routes.clear()
+def beam_search(origin, goal, routes):
 
-print(" ")
-for i in routes: print(i);
-
-# adj.sort()
+    for route in routes:
+        if goal in route.path:
+            return route
     
+    return beam_search(origin, goal, reduce(operator.add, [
+        avalable_routes(route) for route in routes
+    ]))
 
-# route = adj[:3]
+beam_search(origin, goal, routes)
