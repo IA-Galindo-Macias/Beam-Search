@@ -48,31 +48,37 @@ def solution_finded(origin, goal, routes):
 
 
 
-def beam_search(origin, goal, routes):
+def beam_search(origin, goal,beam, routes):
 
     if not routes:              # si el array rutas esta vacio
         return []
 
     # 'var' as in 'let' 
-    foo = solution_finded(origin, goal, routes)
-
-    return foo[0] if len(foo) > 0\
+    solutions = solution_finded(origin, goal, routes)
+    return solutions[0] if len(solutions) > 0\
         else beam_search(
             origin,
             goal,
+            beam,
             sorted(reduce(
                 operator.add,
                 [avalable_routes(route) for route in routes]
-            ),key=lambda x: x.distance)
+            ),key=lambda route: route.distance)[:beam]
     ) 
 
 
 
-origin = Cities.TIJUANA
-goal = Cities.GUERRERO_NEGRO
+# origin = Cities.TECATE
+# goal = Cities.GUERRERO_NEGRO
+
+
+origin = Cities.GUERRERO_NEGRO
+goal = Cities.TECATE
+
 beam = 7
 routes = [Route([origin], 0)]
 
 
-for i in beam_search(origin, goal, routes).path:
+print("Salida <<<")
+for i in beam_search(origin, goal,beam, routes).path:
     print(i)
