@@ -1,10 +1,10 @@
 
+import operator
 from dataclasses import dataclass
-from functools import reduce   
-import operator 
+from functools import reduce
 
-from Utils import Cities
-from Utils import Graph
+from Utils import Cities, Graph
+
 
 @dataclass
 class Route():
@@ -38,22 +38,41 @@ def avalable_routes(route):
         if not city[1] in route.path
     ]
 
-def valid_route(route):
-    pass
 
-origin = Cities.TIJUANA
-goal = Cities.GUERRERO_NEGRO
-beam = 4
-routes = [Route([origin], 0)]
+def valid_route(origin,goal, route):
+    return goal in route.path and origin in route.path
+
+    
+def solution_finded(origin, goal, routes):
+    return [ route for route in routes if valid_route(origin,goal, route)]
+
+
 
 def beam_search(origin, goal, routes):
 
-    for route in routes:
-        if goal in route.path:
-            return route
-    
-    return beam_search(origin, goal, reduce(operator.add, [
-        avalable_routes(route) for route in routes
-    ]))
+    if not routes:              # si el array rutas esta vacio
+        return []
 
-beam_search(origin, goal, routes)
+    # 'var' as in 'let' 
+    foo = solution_finded(origin, goal, routes)
+
+    return foo[0] if len(foo) > 0\
+        else beam_search(
+            origin,
+            goal,
+            sorted(reduce(
+                operator.add,
+                [avalable_routes(route) for route in routes]
+            ),key=lambda x: x.distance)
+    ) 
+
+
+
+origin = Cities.TIJUANA
+goal = Cities.GUERRERO_NEGRO
+beam = 7
+routes = [Route([origin], 0)]
+
+
+for i in beam_search(origin, goal, routes).path:
+    print(i)
