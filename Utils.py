@@ -3,18 +3,6 @@ from dataclasses import dataclass
 from enum import IntEnum
 
 
-class Cities(IntEnum):
-    # Nodos de BCgraph
-    TIJUANA = 0
-    TECATE = 1
-    MEXICALI = 2
-    ROSARITO = 3
-    ENSENADA = 4
-    SAN_FELIPE = 5
-    SAN_QUINTIN = 6
-    GUERRERO_NEGRO = 7
-
-    
 @dataclass
 class Route():
     path: list
@@ -56,7 +44,7 @@ class Graph():
             .add_directed_edge(p2,p1,weight)
 
     
-    def get_vertices(self,p1:int) -> list:
+    def neighbors(self,p1:int) -> list:
         assert p1 < len(self._adj) and p1 >= 0
         return [ (node.weight ,node.key) for node in self._adj[p1] ]
 
