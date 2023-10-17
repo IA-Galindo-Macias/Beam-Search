@@ -14,7 +14,19 @@ class Cities(IntEnum):
     SAN_QUINTIN = 6
     GUERRERO_NEGRO = 7
 
+    
+@dataclass
+class Route():
+    path: list
+    distance: int
 
+    def last(self):
+        return self.path[-1]
+
+    def extend(self, city: tuple):
+        return Route(self.path + [city[1]], self.distance + city[0])
+
+    
 class Graph():
 
     @dataclass
