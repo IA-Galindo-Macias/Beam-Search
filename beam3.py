@@ -6,25 +6,19 @@ from functools import reduce
 from Utils import Graph, Route
 
 # -----------------------------------------------------------------------------
-# Metodos 
+# Métodos 
 # -----------------------------------------------------------------------------
 
 def valid_route(route, origin, goal):
-    """
-    Verificar si una ruta es valida dentro del grafo
-    """
+    """Verificar si una ruta es valida dentro del grafo"""    
     return goal in route.path and origin in route.path
 
 def solutions_found(origin, goal, routes):
-    """
-    Verificar si hay por lo menos 1 solucion
-    """
+    """Verificar si hay por lo menos 1 solucion"""
     return len(solutions(origin, goal, routes)) > 0
 
 def solutions(origin, goal, routes):
-    """
-    Lista de posibles soluciones
-    """
+    """Lista de posibles soluciones"""
     return [
         route
         for route in routes
@@ -32,9 +26,7 @@ def solutions(origin, goal, routes):
     ]
 
 def avalable_routes(graph,route):
-    """
-    Rutas disponibles con todos los nodos disponibles
-    """
+    """Rutas disponibles con todos los nodos disponibles"""
     return [
         route.extend(city)
         for city in graph.neighbors(route.last())
@@ -42,9 +34,7 @@ def avalable_routes(graph,route):
     ]
 
 def beam_search(graph, origin, goal, beam):
-    """
-    Buscar una ruta con Beam Search
-    """
+    """Buscar una ruta con Beam Search"""
     def beam_search_route(routes):
         if not routes:
             # si el array rutas esta vacio
@@ -113,7 +103,7 @@ def test2():
 def test1():
 
     class Cities(IntEnum):
-        TIJUANA = 00
+        TIJUANA = 0
         TECATE = 1
         MEXICALI = 2
         ROSARITO = 3
