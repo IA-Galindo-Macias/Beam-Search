@@ -5,7 +5,6 @@ from functools import reduce
 
 from Utils import Graph, Route
 
-
 # -----------------------------------------------------------------------------
 # Metodos 
 # -----------------------------------------------------------------------------
@@ -46,7 +45,6 @@ def beam_search(graph, origin, goal, beam):
     """
     Buscar una ruta con Beam Search
     """
-    
     def beam_search_route(routes):
         if not routes:
             # si el array rutas esta vacio
@@ -109,13 +107,13 @@ def test2():
     )
 
     print("Ruta:", " -> ".join([city.name for city in solutions[0].path]))
-    print("Distancia: ", solutions[0].distance, end="km\n")
+    print("Distancia: ", solutions[0].distance)
     
 
 def test1():
 
     class Cities(IntEnum):
-        TIJUANA = 0
+        TIJUANA = 00
         TECATE = 1
         MEXICALI = 2
         ROSARITO = 3
@@ -140,11 +138,11 @@ def test1():
         graph = baja_california,
         origin = Cities.TIJUANA,
         goal = Cities.SAN_FELIPE,
-        beam = 3
+        beam = 7
     )
 
     print("Ruta:", " -> ".join([city.name for city in solutions[0].path]))
-    print("Distancia: ", solutions[0].distance, end="km\n")
+    print("Distancia: ", solutions[0].distance, "km")
     
 if __name__ == '__main__':
     test1()
