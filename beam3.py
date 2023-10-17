@@ -1,17 +1,31 @@
 
 import operator
-from functools import reduce
 from enum import IntEnum
+from functools import reduce
 
 from Utils import Graph, Route
 
+
+# -----------------------------------------------------------------------------
+# Metodos 
+# -----------------------------------------------------------------------------
+
 def valid_route(route, origin, goal):
+    """
+    Verificar si una ruta es valida dentro del grafo
+    """
     return goal in route.path and origin in route.path
 
 def solutions_found(origin, goal, routes):
+    """
+    Verificar si hay por lo menos 1 solucion
+    """
     return len(solutions(origin, goal, routes)) > 0
 
 def solutions(origin, goal, routes):
+    """
+    Lista de posibles soluciones
+    """
     return [
         route
         for route in routes
@@ -19,13 +33,20 @@ def solutions(origin, goal, routes):
     ]
 
 def avalable_routes(graph,route):
+    """
+    Rutas disponibles con todos los nodos disponibles
+    """
     return [
         route.extend(city)
         for city in graph.neighbors(route.last())
         if not city[1] in route.path
     ]
 
-def beam_search(graph, origin, goal, beam):    
+def beam_search(graph, origin, goal, beam):
+    """
+    Buscar una ruta con Beam Search
+    """
+    
     def beam_search_route(routes):
         if not routes:
             # si el array rutas esta vacio
@@ -42,12 +63,56 @@ def beam_search(graph, origin, goal, beam):
                     key=lambda route: route.distance
                 )[:beam]
             ) 
-            
     
     return beam_search_route([Route([origin], 0)])
 
+# -----------------------------------------------------------------------------
+# Ejemplos de aplicacion 
+# -----------------------------------------------------------------------------
 
-def test():
+
+def test2():
+    """ 
+    Ejemplo del video:
+    - https://youtu.be/jhoXO1XF6Fk?si=rmkGtnaS0533N1P0
+    """
+    
+    class Node(IntEnum):
+        A = 0
+        B = 1
+        C = 2
+        D = 3
+        E = 4
+        F = 5
+        G = 6
+        H = 7
+
+    video = Graph(len(Node))\
+        .add_edge(Node.A, Node.B, 11)\
+        .add_edge(Node.A, Node.C, 14)\
+        .add_edge(Node.A, Node.D, 7)\
+        .add_edge(Node.B, Node.E, 15)\
+        .add_edge(Node.C, Node.D, 18)\
+        .add_edge(Node.C, Node.E, 8)\
+        .add_edge(Node.C, Node.F, 10)\
+        .add_edge(Node.D, Node.F, 25)\
+        .add_edge(Node.C, Node.F, 10)\
+        .add_edge(Node.E, Node.H, 9)\
+        .add_edge(Node.F, Node.G, 20)\
+        .add_edge(Node.G, Node.H, 10)
+        
+    solutions = beam_search(
+        graph= video,
+        origin= Node.A,
+        goal= Node.G,
+        beam=3
+    )
+
+    print("Ruta:", " -> ".join([city.name for city in solutions[0].path]))
+    print("Distancia: ", solutions[0].distance, end="km\n")
+    
+
+def test1():
 
     class Cities(IntEnum):
         TIJUANA = 0
@@ -71,52 +136,15 @@ def test():
         .add_edge(Cities.SAN_FELIPE, Cities.GUERRERO_NEGRO, 394)\
         .add_edge(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
 
-
     solutions = beam_search(
-        graph= baja_california,
-        origin= Cities.TIJUANA,
-        goal= Cities.SAN_FELIPE,
-        beam=3
+        graph = baja_california,
+        origin = Cities.TIJUANA,
+        goal = Cities.SAN_FELIPE,
+        beam = 3
     )
 
-    # Del video: https://youtu.be/jhoXO1XF6Fk?si=rmkGtnaS0533N1P0
-    class Node(IntEnum):
-        A = 0
-        B = 1
-        C = 2
-        D = 3
-        E = 4
-        F = 5
-        G = 6
-        H = 7
+    print("Ruta:", " -> ".join([city.name for city in solutions[0].path]))
+    print("Distancia: ", solutions[0].distance, end="km\n")
     
-    video = Graph(len(Node))\
-        .add_edge(Node.A, Node.B, 11)\
-        .add_edge(Node.A, Node.C, 14)\
-        .add_edge(Node.A, Node.D, 7)\
-        .add_edge(Node.B, Node.E, 15)\
-        .add_edge(Node.C, Node.D, 18)\
-        .add_edge(Node.C, Node.E, 8)\
-        .add_edge(Node.C, Node.F, 10)\
-        .add_edge(Node.D, Node.F, 25)\
-        .add_edge(Node.C, Node.F, 10)\
-        .add_edge(Node.E, Node.H, 9)\
-        .add_edge(Node.F, Node.G, 20)\
-        .add_edge(Node.G, Node.H, 10)\
-
-
-    solutions2 = beam_search(
-        graph= video,
-        origin= Node.A,
-        goal= Node.G,
-        beam=3
-    )
-    
-    
-    print("Salida")
-    for i in solutions2[0].path:
-        print(i.name)    
-
-
 if __name__ == '__main__':
-    test()
+    test1()
