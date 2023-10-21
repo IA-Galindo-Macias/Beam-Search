@@ -1,0 +1,5 @@
+* Beam-Search
+#+ATTR_HTML: :width 300px
+#+ATTR_LATEX: :width 10cm
+#+CAPTION: Diagrama de beam search
+[[file:diagrams/diagrma.png]]
