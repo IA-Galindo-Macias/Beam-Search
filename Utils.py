@@ -2,6 +2,17 @@
 from dataclasses import dataclass
 from enum import IntEnum
 
+def log_output(func):
+    def wrapper(*args, **kwargs):
+        resultado = func(*args, **kwargs)
+
+        print("----------")
+        for i, arg in enumerate(resultado):
+            print(arg)
+        
+        return resultado
+    return wrapper
+
 
 @dataclass
 class Route():
@@ -13,6 +24,11 @@ class Route():
 
     def extend(self, city: tuple):
         return Route(self.path + [city[1]], self.distance + city[0])
+
+    def __str__(self):
+         return str(self.distance) \
+             + "km: " \
+             + " ".join([city.name for city in self.path]) 
 
     
 class Graph():
