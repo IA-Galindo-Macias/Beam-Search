@@ -28,9 +28,12 @@ solutions = beam_search(
     graph = baja_california,
     origin = Cities.TIJUANA,
     goal = Cities.SAN_FELIPE,
-    beam = 3
+    beam = 5
 )
 
-print("----------")
-print("Ruta:", " -> ".join([city.name for city in solutions[0].path]))
-print("Distancia: ", solutions[0].distance, "km")
+if solutions:
+    print("-----")
+    print("Ruta:", " -> ".join([city.name for city in solutions[0].path]))
+    print("Distancia: ", solutions[0].distance, "km")
+else:
+    print("No hay solución")

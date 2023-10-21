@@ -1,0 +1,47 @@
+@startuml
+title Beam Search 
+!theme plain
+scale 5
+
+start 
+:Agregar el Origen a <rutas>
+con un distancia 0;
+
+floating note right
+        Variables
+        ======
+        * <beam> tamaño del 'beam'
+        * <Origen> Ciudad de origen
+        * <Destino> Ciudad de destino
+        * <rutas> Lista de rutas visitadas
+        =====
+        Para que una ruta sea considerada
+        una solución debe contener el 
+        <Origen> y <Destino>    
+end note
+
+while (¿Solución encontrada o lista <rutas> vacía?) is (No)
+        
+        :Crea una lista vacía para <nuevas rutas>;
+
+        repeat:Para cada ruta en <rutas>...;
+        backward:Calcular la nueva ruta y
+        agregar a <nuevas rutas>;
+        
+repeat while (¿hay nodos vecinos?) is (Si) not (No)
+
+:Ordenar la lista <nuevas_rutas> por distancia;
+:Selecciona las primeras <beam> de la lista;
+:Vaciar la lista <rutas>;
+:Agregar <nuevas_rutas> a <rutas>;
+
+endwhile (Si)
+
+if (¿<rutas> esta vacía?) then (Si)
+:No se pudo encontrar una ruta;
+else (No)
+:Retornar primer elemento de <rutas>;
+endif
+
+stop
+@enduml
