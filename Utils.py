@@ -28,7 +28,7 @@ class Route():
     def __str__(self):
          return str(self.distance) \
              + "km: " \
-             + " ".join([city.name for city in self.path]) 
+             + ", ".join([city.name for city in self.path]) 
 
     
 class Graph():
