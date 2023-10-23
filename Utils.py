@@ -1,6 +1,7 @@
 
 from dataclasses import dataclass
 from enum import IntEnum
+import networkx as nx
 
 def log_output(func):
     def wrapper(*args, **kwargs):
@@ -73,3 +74,16 @@ class Graph():
                 self.get_vertices(p1)
             )
         ]
+    
+    def as_dict(self):
+        graph_dict = {}
+        for node in range(len(self._adj)):
+            graph_dict[node] = [(edge.key, edge.weight) for edge in self._adj[node]]
+        return graph_dict
+    
+    def as_networkx(self):
+        G = nx.DiGraph()
+        for node in range(len(self._adj)):
+            for edge in self._adj[node]:
+                G.add_edge(node, edge.key, weight=edge.weight)
+        return G

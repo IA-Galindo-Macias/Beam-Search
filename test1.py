@@ -1,4 +1,3 @@
-
 from enum import IntEnum
 from beam3 import beam_search, Graph
 
@@ -24,11 +23,37 @@ baja_california = Graph(len(Cities))\
     .add_edge(Cities.SAN_FELIPE, Cities.GUERRERO_NEGRO, 394)\
     .add_edge(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
 
+"""Networkx"""
+# Etiquetas
+city_names = {
+    Cities.TIJUANA: "Tijuana",
+    Cities.TECATE: "Tecate",
+    Cities.MEXICALI: "Mexicali",
+    Cities.ROSARITO: "Rosarito",
+    Cities.ENSENADA: "Ensenada",
+    Cities.SAN_FELIPE: "San Felipe",
+    Cities.SAN_QUINTIN: "San Quintin",
+    Cities.GUERRERO_NEGRO: "Guerrero Negro"
+}
+# Posiciones de nodos
+posiciones_fijas = {
+    Cities.TIJUANA: (0, 0),
+    Cities.ROSARITO: (-0.5, -0.1),
+    Cities.TECATE: (1.5, 0),
+    Cities.ENSENADA: (-0.2, -0.3),
+    Cities.MEXICALI: (3, 0),
+    Cities.SAN_FELIPE: (3, -0.5),
+    Cities.SAN_QUINTIN: (-0.2, -0.8),
+    Cities.GUERRERO_NEGRO: (1.4, -1)
+}
+
 solutions = beam_search(
     graph = baja_california,
     origin = Cities.TIJUANA,
     goal = Cities.SAN_FELIPE,
-    beam = 5
+    beam = 2,
+    positions = posiciones_fijas,
+    city_names = city_names
 )
 
 if solutions:
