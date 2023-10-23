@@ -51,7 +51,7 @@ solutions = beam_search(
     graph = baja_california,
     origin = Cities.TIJUANA,
     goal = Cities.SAN_FELIPE,
-    beam = 2,
+    beam = 1,
     positions = posiciones_fijas,
     city_names = city_names
 )

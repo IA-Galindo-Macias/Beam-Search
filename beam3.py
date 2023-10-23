@@ -33,6 +33,11 @@ def available_routes(graph,route):
 
 @log_output
 def extract_best(graph, routes):
+    for route in routes:
+        #available_routes(graph, route)
+        print(f"Mejor ruta actual: {', '.join([city.name for city in route.path])} | Distancia: {route.distance}")
+        
+    input("***voy a ordenar y regresar las rutas disponibles*** ")        
     return sorted(
         reduce(
             operator.add,
@@ -50,13 +55,19 @@ def beam_search(graph, origin, goal, beam, positions, city_names):
             # si el array rutas esta vacio
             return []
         
+        print("graficando...")
         plot_graph(graph, routes, positions, city_names)
 
         return solutions(origin, goal, routes)\
             if solutions_found(origin, goal, routes)\
             else beam_search_route(
                 extract_best(graph, routes)[:beam]
-            ) 
+            )
+    
+        '''if solutions_found(origin, goal, routes):
+            return solutions(origin, goal, routes)
+        else:
+            beam_search_route(extract_best(graph, routes)[:beam])'''
     
     return beam_search_route([Route([origin], 0)])
 

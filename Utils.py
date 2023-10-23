@@ -5,12 +5,16 @@ import networkx as nx
 
 def log_output(func):
     def wrapper(*args, **kwargs):
+        #print("wrapper se esta ejecutando")
         resultado = func(*args, **kwargs)
 
         print("-----")
+        print("Rutas disponibles:")
+        print("***wrapper va a imprimir***")
         for i, arg in enumerate(resultado):
             print(arg)
         
+        print("")
         return resultado
     return wrapper
 
