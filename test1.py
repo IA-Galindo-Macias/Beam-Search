@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from enum import IntEnum
 from beam import beam_search, Graph
 
-
+# lista de ciudades en baja california
+# ----------------------------------------------------------------------
 class Cities(IntEnum):
     TIJUANA = 0
     TECATE = 1
@@ -15,7 +16,21 @@ class Cities(IntEnum):
     SAN_QUINTIN = 6
     GUERRERO_NEGRO = 7
 
+# Posiciones de nodos para networkX
+# ----------------------------------------------------------------------
+positions = {
+    Cities.TIJUANA: (0, 0),
+    Cities.ROSARITO: (-0.5, -0.1),
+    Cities.TECATE: (1.5, 0),
+    Cities.ENSENADA: (-0.2, -0.3),
+    Cities.MEXICALI: (3, 0),
+    Cities.SAN_FELIPE: (3, -0.5),
+    Cities.SAN_QUINTIN: (-0.2, -0.8),
+    Cities.GUERRERO_NEGRO: (1.4, -1)
+}
 
+# grafo de baja california
+# ----------------------------------------------------------------------
 baja_california = Graph(len(Cities))\
     .add_edge(Cities.TIJUANA, Cities.TECATE, 52)\
     .add_edge(Cities.TIJUANA, Cities.ROSARITO, 20)\
@@ -28,19 +43,8 @@ baja_california = Graph(len(Cities))\
     .add_edge(Cities.SAN_FELIPE, Cities.GUERRERO_NEGRO, 394)\
     .add_edge(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
 
-# Posiciones de nodos
-positions = {
-    Cities.TIJUANA: (0, 0),
-    Cities.ROSARITO: (-0.5, -0.1),
-    Cities.TECATE: (1.5, 0),
-    Cities.ENSENADA: (-0.2, -0.3),
-    Cities.MEXICALI: (3, 0),
-    Cities.SAN_FELIPE: (3, -0.5),
-    Cities.SAN_QUINTIN: (-0.2, -0.8),
-    Cities.GUERRERO_NEGRO: (1.4, -1)
-}
-
-
+# networkX
+# ----------------------------------------------------------------------
 def plot_graph(cities_enum, positions):
     """Construye una funcion para graficar patito feo :'("""
 
@@ -56,9 +60,16 @@ def plot_graph(cities_enum, positions):
     }
 
     def draw_graph(graph, route):
-        nx_graph = graph.as_networkx()
+        # convertir grafo a DiGraph
+        nx_graph = nx.DiGraph()
+        for node in range(len(graph._adj)):
+            for edge in graph._adj[node]:
+                nx_graph.add_edge(node, edge.key, weight=edge.weight)
+
+        # unir vertices
         route_edges = list(zip(route.path[:-1], route.path[1:]))
 
+        # labels de pesos
         edge_labels = {
             (origen, destino): weight
             for origen, destino in nx_graph.edges()
@@ -107,18 +118,21 @@ def plot_graph(cities_enum, positions):
     return draw_graph
 
 
+# Beam Search
+# ----------------------------------------------------------------------
 solutions = beam_search(
-    # plot_func=plot_graph(Cities, positions),
-
     graph=baja_california,
     origin=Cities.TIJUANA,
     goal=Cities.GUERRERO_NEGRO,
     beam=7,
+
+    # funcion para graficar
+    plot_func=plot_graph(Cities, positions)
 )
 
 if solutions:
     print("-----")
-    print("Ruta:", " -> ".join([city.name for city in solutions[0].path]))
+    print("Ruta:", ", ".join([city.name for city in solutions[0].path]))
     print("Distancia: ", solutions[0].distance, "km")
 else:
     print("No hay solución")

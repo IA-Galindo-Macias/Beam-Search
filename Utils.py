@@ -1,7 +1,5 @@
 
 from dataclasses import dataclass
-from enum import IntEnum
-import networkx as nx
 
 
 def log_output(func):
@@ -67,11 +65,3 @@ class Graph():
     def neighbors(self, p1: int) -> list:
         assert p1 < len(self._adj) and p1 >= 0
         return [(node.weight, node.key) for node in self._adj[p1]]
-
-    # TODO: extraer este metodo a la funcion de graficar
-    def as_networkx(self):
-        G = nx.DiGraph()
-        for node in range(len(self._adj)):
-            for edge in self._adj[node]:
-                G.add_edge(node, edge.key, weight=edge.weight)
-        return G

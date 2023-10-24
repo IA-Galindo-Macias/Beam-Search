@@ -11,7 +11,11 @@ def valid_solution(route, origin, goal):
 
 def solutions(origin, goal, routes):
     """Lista de posibles soluciones"""
-    return [route for route in routes if valid_solution(route, origin, goal)]
+    return [
+        route 
+        for route in routes 
+        if valid_solution(route, origin, goal)
+    ]
 
 
 def solutions_found(origin, goal, routes):
@@ -58,6 +62,6 @@ def beam_search(graph, origin, goal, beam, plot_func=lambda x,y: None):
             else beam_search_route(
                 # extrae los mejores 'beam' casos
                 extended_routes(graph, routes)[:beam]
-        )
+            )
 
     return beam_search_route([Route([origin], 0)])
