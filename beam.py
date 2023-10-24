@@ -29,11 +29,10 @@ def available_routes(graph, route):
 
 @log_output
 def extended_routes(graph, routes):
-    """ retorna una lista con rutas extendidas """
-    return sorted(reduce(
+    """ retorna una lista con rutas extendidas"""
+    return reduce(
         operator.add,
-        [available_routes(graph, route) for route in routes]),
-        key=lambda route: route.distance
+        [available_routes(graph, route) for route in routes]
     )
 
 
@@ -43,21 +42,24 @@ def beam_search(graph, origin, goal, beam, plot_func=None):
     assert beam >= 0
 
     def beam_search_route(routes):
-        if not routes:
-            # si el array rutas esta vacio
-            return []
 
         if plot_func != None:
             # dibujar el grafo
             for route in routes:
                 plot_func(graph, route)
 
+        if not routes:
+            # si el array rutas esta vacio
+            return []
+
         # aplica beam search a las rutas extendidas
         return solutions(origin, goal, routes)\
             if solutions_found(origin, goal, routes)\
             else beam_search_route(
-                # extrae los mejores 'beam' casos
-                extended_routes(graph, routes)[:beam]
+                sorted(
+                    extended_routes(graph, routes),
+                    key=lambda route: route.distance
+                )[:beam] # extrae los mejores 'beam' casos
         )
 
     return beam_search_route([Route([origin], 0)])

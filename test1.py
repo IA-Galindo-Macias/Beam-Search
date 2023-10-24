@@ -15,7 +15,6 @@ class Cities(IntEnum):
     SAN_QUINTIN = 6
     GUERRERO_NEGRO = 7
 
-
 baja_california = Graph(len(Cities))\
     .add_edge(Cities.TIJUANA, Cities.TECATE, 52)\
     .add_edge(Cities.TIJUANA, Cities.ROSARITO, 20)\
@@ -28,46 +27,41 @@ baja_california = Graph(len(Cities))\
     .add_edge(Cities.SAN_FELIPE, Cities.GUERRERO_NEGRO, 394)\
     .add_edge(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
 
-def plot_graph():
+# Posiciones de nodos
+positions = {
+    Cities.TIJUANA: (0, 0),
+    Cities.ROSARITO: (-0.5, -0.1),
+    Cities.TECATE: (1.5, 0),
+    Cities.ENSENADA: (-0.2, -0.3),
+    Cities.MEXICALI: (3, 0),
+    Cities.SAN_FELIPE: (3, -0.5),
+    Cities.SAN_QUINTIN: (-0.2, -0.8),
+    Cities.GUERRERO_NEGRO: (1.4, -1)
+}
+
+def plot_graph(cities_enum, positions):
     """Construye una funcion para graficar patito feo :'("""
 
     # Etiquetas
     names = {
-        Cities.TIJUANA: "Tijuana",
-        Cities.TECATE: "Tecate",
-        Cities.MEXICALI: "Mexicali",
-        Cities.ROSARITO: "Rosarito",
-        Cities.ENSENADA: "Ensenada",
-        Cities.SAN_FELIPE: "San Felipe",
-        Cities.SAN_QUINTIN: "San Quintin",
-        Cities.GUERRERO_NEGRO: "Guerrero Negro"
+        city.value: city.name
+        for city in cities_enum
     }
 
-    # Posiciones de nodos
-    positions = {
-        Cities.TIJUANA: (0, 0),
-        Cities.ROSARITO: (-0.5, -0.1),
-        Cities.TECATE: (1.5, 0),
-        Cities.ENSENADA: (-0.2, -0.3),
-        Cities.MEXICALI: (3, 0),
-        Cities.SAN_FELIPE: (3, -0.5),
-        Cities.SAN_QUINTIN: (-0.2, -0.8),
-        Cities.GUERRERO_NEGRO: (1.4, -1)
+    labels = {
+        node: names[node]
+        for node in names
     }
 
     def draw_graph(graph, route):
         nx_graph = graph.as_networkx()
         route_edges = list(zip(route.path[:-1], route.path[1:]))
+        
         edge_labels = {
             (origen, destino): weight
             for origen, destino in nx_graph.edges()
             for weight, neighbor in graph.neighbors(origen)
             if neighbor == destino
-        }
-
-        labels = {
-            node: names[node]
-            for node in positions.keys()
         }
 
         # Dibujar el grafo en esta iteracion
@@ -110,8 +104,10 @@ def plot_graph():
 
     return draw_graph
 
+
 solutions = beam_search(
-    plot_func=plot_graph(),
+    plot_func=plot_graph(Cities, positions),
+
     graph=baja_california,
     origin=Cities.TIJUANA,
     goal=Cities.ENSENADA,
