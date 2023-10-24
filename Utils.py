@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from enum import IntEnum
 import networkx as nx
 
+
 def log_output(func):
     """ Imprime la salida de la funcion """
     def wrapper(*args, **kwargs):
@@ -12,7 +13,7 @@ def log_output(func):
         print("-----")
         for i, arg in enumerate(resultado):
             print(arg)
-        
+
         print("")
         return resultado
     return wrapper
@@ -30,11 +31,11 @@ class Route():
         return Route(self.path + [city[1]], self.distance + city[0])
 
     def __str__(self):
-         return str(self.distance) \
-             + "km: " \
-             + ", ".join([city.name for city in self.path])
-     
-    
+        return str(self.distance) \
+            + "km: " \
+            + ", ".join([city.name for city in self.path])
+
+
 class Graph():
 
     @dataclass
@@ -42,43 +43,32 @@ class Graph():
         key: int
         weight: float
 
-        
-    def __init__(self, nodes:int) -> None:
+    def __init__(self, nodes: int) -> None:
         assert nodes > 0
-        
+
         self.nodes = nodes
-        self._adj = [ [] for i in range(nodes) ]
+        self._adj = [[] for i in range(nodes)]
 
     def __len__(self):
         return len(self._adj)
 
-
-    def add_directed_edge(self, p1:int, p2:int, weight=1):
+    def add_directed_edge(self, p1: int, p2: int, weight=1):
         assert p1 < len(self._adj) and p1 >= 0
         assert p2 < len(self._adj) and p2 >= 0
-        
-        self._adj[p1].append( Graph.Node(p2, weight))
-        return self
-    
-        
-    def add_edge(self, p1:int, p2:int, weight=1):
-        return self\
-            .add_directed_edge(p1,p2,weight)\
-            .add_directed_edge(p2,p1,weight)
 
-    
-    def neighbors(self,p1:int) -> list:
+        self._adj[p1].append(Graph.Node(p2, weight))
+        return self
+
+    def add_edge(self, p1: int, p2: int, weight=1):
+        return self\
+            .add_directed_edge(p1, p2, weight)\
+            .add_directed_edge(p2, p1, weight)
+
+    def neighbors(self, p1: int) -> list:
         assert p1 < len(self._adj) and p1 >= 0
-        return [ (node.weight ,node.key) for node in self._adj[p1] ]
-    
-    
-    def as_dict(self):
-        graph_dict = {}
-        for node in range(len(self._adj)):
-            graph_dict[node] = [(edge.key, edge.weight) for edge in self._adj[node]]
-        return graph_dict
-    
-    
+        return [(node.weight, node.key) for node in self._adj[p1]]
+
+    # TODO: extraer este metodo a la funcion de graficar
     def as_networkx(self):
         G = nx.DiGraph()
         for node in range(len(self._adj)):

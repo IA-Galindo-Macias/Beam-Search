@@ -114,8 +114,8 @@ solutions = beam_search(
     plot_func=plot_graph(),
     graph=baja_california,
     origin=Cities.TIJUANA,
-    goal=Cities.SAN_FELIPE,
-    beam=1,
+    goal=Cities.ENSENADA,
+    beam=4,
 )
 
 if solutions:
