@@ -5,7 +5,7 @@ from enum import IntEnum
 from beam import beam_search, Graph
 
 # lista de ciudades en baja california
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------
 class Cities(IntEnum):
     TIJUANA = 0
     TECATE = 1
@@ -17,7 +17,7 @@ class Cities(IntEnum):
     GUERRERO_NEGRO = 7
 
 # Posiciones de nodos para networkX
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------
 positions = {
     Cities.TIJUANA: (0, 0),
     Cities.ROSARITO: (-0.5, -0.1),
@@ -30,7 +30,7 @@ positions = {
 }
 
 # grafo de baja california
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------
 baja_california = Graph(len(Cities))\
     .add_edge(Cities.TIJUANA, Cities.TECATE, 52)\
     .add_edge(Cities.TIJUANA, Cities.ROSARITO, 20)\
@@ -44,7 +44,7 @@ baja_california = Graph(len(Cities))\
     .add_edge(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
 
 # networkX
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------
 def plot_graph(cities_enum, positions):
     """Construye una funcion para graficar patito feo :'("""
 
@@ -117,10 +117,10 @@ def plot_graph(cities_enum, positions):
 
     return draw_graph
 
-
 # Beam Search
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------
 solutions = beam_search(
+    # parametros de beam search
     graph=baja_california,
     origin=Cities.TIJUANA,
     goal=Cities.GUERRERO_NEGRO,
@@ -130,6 +130,8 @@ solutions = beam_search(
     plot_func=plot_graph(Cities, positions)
 )
 
+# Salida del beam search
+# ---------------------------------------------------------------------
 if solutions:
     print("-----")
     print("Ruta:", ", ".join([city.name for city in solutions[0].path]))
