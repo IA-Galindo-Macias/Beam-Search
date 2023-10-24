@@ -27,8 +27,8 @@ class Route():
     def last(self):
         return self.path[-1]
 
-    def extend(self, city: tuple):
-        return Route(self.path + [city[1]], self.distance + city[0])
+    def extend(self, city, distance):
+        return Route(self.path + [city], self.distance + distance)
 
     def __str__(self):
         return str(self.distance) \

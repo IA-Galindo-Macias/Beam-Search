@@ -22,38 +22,35 @@ def solutions_found(origin, goal, routes):
 def available_routes(graph, route):
     """Rutas disponibles con todos los nodos disponibles"""
     return [
-        route.extend(city) for city in graph.neighbors(route.last())
-        if not city[1] in route.path
+        route.extend(city, distance) 
+        for distance, city in graph.neighbors(route.last())
+        if not city in route.path
     ]
 
 
 @log_output
 def extended_routes(graph, routes):
-    """ retorna una lista con rutas extendidas"""
+    """ retorna una lista con rutas extendidas """
     return sorted(
-            reduce(
-                operator.add,
-                [available_routes(graph, route) for route in routes]
-            ),
-            key=lambda route: route.distance
-        )
-
+        reduce(
+            operator.add,
+            [available_routes(graph, route) for route in routes]
+        ),
+        key=lambda route: route.distance
+    )
 
 
 def beam_search(graph, origin, goal, beam, plot_func=None):
     """Buscar una ruta con Beam Search"""
-
     assert beam >= 0
 
     def beam_search_route(routes):
 
-        if plot_func != None:
-            # dibujar el grafo
+        if plot_func != None: # dibujar el grafo
             for route in routes:
                 plot_func(graph, route)
 
-        if not routes:
-            # si el array rutas esta vacio
+        if not routes: # si el array rutas esta vacio
             return []
 
         # aplica beam search a las rutas extendidas
@@ -61,7 +58,7 @@ def beam_search(graph, origin, goal, beam, plot_func=None):
             if solutions_found(origin, goal, routes)\
             else beam_search_route(
                 # extrae los mejores 'beam' casos
-                extended_routes(graph, routes)[:beam]  
-            )
+                extended_routes(graph, routes)[:beam]
+        )
 
     return beam_search_route([Route([origin], 0)])
