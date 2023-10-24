@@ -15,6 +15,7 @@ class Cities(IntEnum):
     SAN_QUINTIN = 6
     GUERRERO_NEGRO = 7
 
+
 baja_california = Graph(len(Cities))\
     .add_edge(Cities.TIJUANA, Cities.TECATE, 52)\
     .add_edge(Cities.TIJUANA, Cities.ROSARITO, 20)\
@@ -39,6 +40,7 @@ positions = {
     Cities.GUERRERO_NEGRO: (1.4, -1)
 }
 
+
 def plot_graph(cities_enum, positions):
     """Construye una funcion para graficar patito feo :'("""
 
@@ -56,7 +58,7 @@ def plot_graph(cities_enum, positions):
     def draw_graph(graph, route):
         nx_graph = graph.as_networkx()
         route_edges = list(zip(route.path[:-1], route.path[1:]))
-        
+
         edge_labels = {
             (origen, destino): weight
             for origen, destino in nx_graph.edges()
@@ -110,8 +112,8 @@ solutions = beam_search(
 
     graph=baja_california,
     origin=Cities.TIJUANA,
-    goal=Cities.ENSENADA,
-    beam=4,
+    goal=Cities.GUERRERO_NEGRO,
+    beam=7,
 )
 
 if solutions:
