@@ -108,7 +108,7 @@ def plot_graph(cities_enum, positions):
 
 
 solutions = beam_search(
-    plot_func=plot_graph(Cities, positions),
+    # plot_func=plot_graph(Cities, positions),
 
     graph=baja_california,
     origin=Cities.TIJUANA,

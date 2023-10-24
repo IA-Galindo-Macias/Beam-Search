@@ -40,15 +40,14 @@ def extended_routes(graph, routes):
     )
 
 
-def beam_search(graph, origin, goal, beam, plot_func=None):
+def beam_search(graph, origin, goal, beam, plot_func=lambda x,y: None):
     """Buscar una ruta con Beam Search"""
     assert beam >= 0
 
     def beam_search_route(routes):
 
-        if plot_func != None: # dibujar el grafo
-            for route in routes:
-                plot_func(graph, route)
+        for route in routes:
+            plot_func(graph, route)
 
         if not routes: # si el array rutas esta vacio
             return []
