@@ -35,6 +35,7 @@ city_names = {
     Cities.SAN_QUINTIN: "San Quintin",
     Cities.GUERRERO_NEGRO: "Guerrero Negro"
 }
+
 # Posiciones de nodos
 posiciones_fijas = {
     Cities.TIJUANA: (0, 0),
@@ -51,7 +52,8 @@ solutions = beam_search(
     graph = baja_california,
     origin = Cities.TIJUANA,
     goal = Cities.SAN_FELIPE,
-    beam = 1,
+    beam = 3,
+    
     positions = posiciones_fijas,
     city_names = city_names
 )

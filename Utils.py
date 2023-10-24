@@ -4,13 +4,12 @@ from enum import IntEnum
 import networkx as nx
 
 def log_output(func):
+    """ Imprime la salida de la funcion """
     def wrapper(*args, **kwargs):
-        #print("wrapper se esta ejecutando")
         resultado = func(*args, **kwargs)
 
         print("-----")
         print("Rutas disponibles:")
-        print("***wrapper va a imprimir***")
         for i, arg in enumerate(resultado):
             print(arg)
         
@@ -33,8 +32,8 @@ class Route():
     def __str__(self):
          return str(self.distance) \
              + "km: " \
-             + ", ".join([city.name for city in self.path]) 
-
+             + ", ".join([city.name for city in self.path])
+     
     
 class Graph():
 
@@ -49,6 +48,9 @@ class Graph():
         
         self.nodes = nodes
         self._adj = [ [] for i in range(nodes) ]
+
+    def __len__(self):
+        return len(self._adj)
 
 
     def add_directed_edge(self, p1:int, p2:int, weight=1):
@@ -68,22 +70,14 @@ class Graph():
     def neighbors(self,p1:int) -> list:
         assert p1 < len(self._adj) and p1 >= 0
         return [ (node.weight ,node.key) for node in self._adj[p1] ]
-
-
-    def get_weight(self, p1, p2) -> list:
-        assert p1 < len(self._adj) and p1 >= 0
-        return [
-            node[0] for node in filter(
-                lambda node: node[1] == p2,
-                self.get_vertices(p1)
-            )
-        ]
+    
     
     def as_dict(self):
         graph_dict = {}
         for node in range(len(self._adj)):
             graph_dict[node] = [(edge.key, edge.weight) for edge in self._adj[node]]
         return graph_dict
+    
     
     def as_networkx(self):
         G = nx.DiGraph()
