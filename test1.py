@@ -92,7 +92,7 @@ def plot_graph():
         )
 
         nx.draw_networkx_edges(
-            graph.as_networkx(),
+            nx_graph,
             pos=positions,
             edgelist=route_edges,
             edge_color="red",
@@ -100,7 +100,7 @@ def plot_graph():
         )
 
         nx.draw_networkx_edge_labels(
-            graph.as_networkx(),
+            nx_graph,
             pos=positions,
             edge_labels=edge_labels,
             font_color="black"
