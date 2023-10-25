@@ -64,10 +64,10 @@ def plot_graph(cities_enum, positions):
 
     def draw_graph(graph, route):
         # convertir grafo a DiGraph
-        baja_california = nx.DiGraph()
+        nx_graph = nx.DiGraph()
         for node in range(len(graph._adj)):
             for edge in graph._adj[node]:
-                baja_california.add_edge(node, edge.key, weight=edge.weight)
+                nx_graph.add_edge(node, edge.key, weight=edge.weight)
 
         # unir vertices
         route_edges = list(zip(route.path[:-1], route.path[1:]))
@@ -75,7 +75,7 @@ def plot_graph(cities_enum, positions):
         # labels de pesos
         edge_labels = {
             (origen, destino): weight
-            for origen, destino in baja_california.edges()
+            for origen, destino in nx_graph.edges()
             for weight, neighbor in graph.neighbors(origen)
             if neighbor == destino
         }
@@ -83,7 +83,7 @@ def plot_graph(cities_enum, positions):
         # Dibujar el grafo en esta iteracion
         plt.figure(figsize=(8, 8))
         nx.draw(
-            baja_california,
+            nx_graph,
             pos=positions,
             with_labels=True,
             labels=labels,
@@ -102,7 +102,7 @@ def plot_graph(cities_enum, positions):
         )
 
         nx.draw_networkx_edges(
-            baja_california,
+            nx_graph,
             pos=positions,
             edgelist=route_edges,
             edge_color="red",
@@ -110,7 +110,7 @@ def plot_graph(cities_enum, positions):
         )
 
         nx.draw_networkx_edge_labels(
-            baja_california,
+            nx_graph,
             pos=positions,
             edge_labels=edge_labels,
             font_color="black"
@@ -136,8 +136,7 @@ solutions = beam_search(
 # Salida del beam search
 # ---------------------------------------------------------------------
 if solutions:
-    print("-----")
-    print("Ruta:", ", ".join([city.name for city in solutions[0].path]))
-    print("Distancia: ", solutions[0].distance, "km")
+    print("\n\n----- Mejor Ruta -----")
+    print(solutions[0])
 else:
     print("No hay solución")

@@ -34,10 +34,12 @@ def available_routes(graph, route):
 
 @log_output
 def extended_routes(graph, routes):
-    for route in routes:
-        print(f"Mejor ruta actual: {', '.join([city.name for city in route.path])} | Distancia: {route.distance}")
-        
     """ retorna una lista con rutas extendidas """
+
+    print("** Mejor ruta actual")
+    for route in routes:
+        print(route)
+
     return sorted(
         reduce(
             operator.add,

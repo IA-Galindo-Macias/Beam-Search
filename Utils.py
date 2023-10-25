@@ -7,8 +7,7 @@ def log_output(func):
     def wrapper(*args, **kwargs):
         resultado = func(*args, **kwargs)
 
-        print("\nRutas disponibles:")
-        print("-----")
+        print("\n\n\n* Rutas disponibles")
         for i, arg in enumerate(resultado):
             print(arg)
 
