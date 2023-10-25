@@ -124,7 +124,7 @@ solutions = beam_search(
     graph=baja_california,
     origin=Cities.TIJUANA,
     goal=Cities.GUERRERO_NEGRO,
-    beam=7,
+    beam=3,
 
     # funcion para graficar
     plot_func=plot_graph(Cities, positions)
