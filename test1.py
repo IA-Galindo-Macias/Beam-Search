@@ -1,5 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 
 from enum import IntEnum
 from beam import beam_search, Graph
@@ -61,10 +64,10 @@ def plot_graph(cities_enum, positions):
 
     def draw_graph(graph, route):
         # convertir grafo a DiGraph
-        nx_graph = nx.DiGraph()
+        baja_california = nx.DiGraph()
         for node in range(len(graph._adj)):
             for edge in graph._adj[node]:
-                nx_graph.add_edge(node, edge.key, weight=edge.weight)
+                baja_california.add_edge(node, edge.key, weight=edge.weight)
 
         # unir vertices
         route_edges = list(zip(route.path[:-1], route.path[1:]))
@@ -72,7 +75,7 @@ def plot_graph(cities_enum, positions):
         # labels de pesos
         edge_labels = {
             (origen, destino): weight
-            for origen, destino in nx_graph.edges()
+            for origen, destino in baja_california.edges()
             for weight, neighbor in graph.neighbors(origen)
             if neighbor == destino
         }
@@ -80,7 +83,7 @@ def plot_graph(cities_enum, positions):
         # Dibujar el grafo en esta iteracion
         plt.figure(figsize=(8, 8))
         nx.draw(
-            nx_graph,
+            baja_california,
             pos=positions,
             with_labels=True,
             labels=labels,
@@ -99,7 +102,7 @@ def plot_graph(cities_enum, positions):
         )
 
         nx.draw_networkx_edges(
-            nx_graph,
+            baja_california,
             pos=positions,
             edgelist=route_edges,
             edge_color="red",
@@ -107,7 +110,7 @@ def plot_graph(cities_enum, positions):
         )
 
         nx.draw_networkx_edge_labels(
-            nx_graph,
+            baja_california,
             pos=positions,
             edge_labels=edge_labels,
             font_color="black"
