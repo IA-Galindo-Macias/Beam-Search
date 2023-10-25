@@ -1,11 +1,10 @@
+from beam import beam_search, Graph
+from enum import IntEnum
 import networkx as nx
 import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-
-from enum import IntEnum
-from beam import beam_search, Graph
 
 # lista de ciudades en baja california
 # ---------------------------------------------------------------------
@@ -19,18 +18,6 @@ class Cities(IntEnum):
     SAN_QUINTIN = 6
     GUERRERO_NEGRO = 7
 
-# Posiciones de nodos para networkX
-# ---------------------------------------------------------------------
-positions = {
-    Cities.TIJUANA: (0, 0),
-    Cities.ROSARITO: (-0.5, -0.1),
-    Cities.TECATE: (1.5, 0),
-    Cities.ENSENADA: (-0.2, -0.3),
-    Cities.MEXICALI: (3, 0),
-    Cities.SAN_FELIPE: (3, -0.5),
-    Cities.SAN_QUINTIN: (-0.2, -0.8),
-    Cities.GUERRERO_NEGRO: (1.4, -1)
-}
 
 # grafo de baja california
 # ---------------------------------------------------------------------
@@ -45,6 +32,19 @@ baja_california = Graph(len(Cities))\
     .add_edge(Cities.ENSENADA, Cities.SAN_QUINTIN, 185)\
     .add_edge(Cities.SAN_FELIPE, Cities.GUERRERO_NEGRO, 394)\
     .add_edge(Cities.SAN_QUINTIN, Cities.GUERRERO_NEGRO, 425)
+
+# Posiciones de nodos para networkX
+# ---------------------------------------------------------------------
+positions = {
+    Cities.TIJUANA: (0, 0),
+    Cities.ROSARITO: (-0.5, -0.1),
+    Cities.TECATE: (1.5, 0),
+    Cities.ENSENADA: (-0.2, -0.3),
+    Cities.MEXICALI: (3, 0),
+    Cities.SAN_FELIPE: (3, -0.5),
+    Cities.SAN_QUINTIN: (-0.2, -0.8),
+    Cities.GUERRERO_NEGRO: (1.4, -1)
+}
 
 # networkX
 # ---------------------------------------------------------------------
@@ -119,6 +119,7 @@ def plot_graph(cities_enum, positions):
         plt.show()
 
     return draw_graph
+
 
 # Beam Search
 # ---------------------------------------------------------------------
